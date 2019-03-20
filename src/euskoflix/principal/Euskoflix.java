@@ -10,7 +10,6 @@ import euskoflix.vista.VentanaMostrarDatos;
 
 public class Euskoflix {
 	
-	//alex das pena
 	
 	//ATRIBITOS
 	private static String workspace; //args
