@@ -48,13 +48,5 @@ public class Euskoflix {
 		MatrizValoraciones.getValoracionesUsuario().cargar(movie_ratings);
 		ModeloProducto.getModeloProducto().cargar(movie_tags);
 		MovieTitles.getMovieTitles().cargar(movie_titles);
-	}
-	
-	
-
-	
-		
-	
-		
-	
+	}	
 }
