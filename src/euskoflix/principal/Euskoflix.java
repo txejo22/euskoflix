@@ -1,7 +1,10 @@
 package euskoflix.principal;
 
+import java.io.File;
 import java.io.IOException;
-
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import euskoflix.modeloBueno.MatrizValoraciones;
 import euskoflix.modeloBueno.ModeloProducto;
@@ -12,11 +15,9 @@ public class Euskoflix {
 	
 	
 	//ATRIBITOS
-	private static String workspace; //args
-
-	private static String movie_ratings;
-	private static String movie_tags;
-	private static String movie_titles;
+	private static String movie_ratings="./src/euskoflix/archivos/movie_ratings.csv";
+	private static String movie_tags="./src/euskoflix/archivos/movie_tags.csv";
+	private static String movie_titles="./src/euskoflix/archivos/movie_titles.csv";
 	
 	private static Euskoflix miEuskoflix;
 	
@@ -24,14 +25,7 @@ public class Euskoflix {
 	private Euskoflix() {}
 	
 	//MAIN
-	public static void main(String[] args) throws IOException {	
-		workspace=args[0];
-		
-		movie_ratings=workspace+"\\euskoflix\\src\\euskoflix\\archivos\\movie_ratings.csv";
-		movie_tags=workspace+"\\euskoflix\\src\\euskoflix\\archivos\\movie_tags.csv";
-		movie_titles=workspace+"\\euskoflix\\src\\euskoflix\\archivos\\movie_titles.csv";
-		
-
+	public static void main(String[] args) throws IOException, URISyntaxException {	
 		Euskoflix.getEuskoflix().cargarEstrucutras();	
 		VentanaMostrarDatos v=new VentanaMostrarDatos();
 	}
@@ -44,7 +38,7 @@ public class Euskoflix {
 		return miEuskoflix;
 	}
 	
-	private void cargarEstrucutras() throws IOException {
+	private void cargarEstrucutras() throws IOException, URISyntaxException {
 		MatrizValoraciones.getValoracionesUsuario().cargar(movie_ratings);
 		ModeloProducto.getModeloProducto().cargar(movie_tags);
 		MovieTitles.getMovieTitles().cargar(movie_titles);
