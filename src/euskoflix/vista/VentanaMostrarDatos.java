@@ -30,6 +30,7 @@ public class VentanaMostrarDatos extends JFrame{
 		frmEuskoflix.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmEuskoflix.getContentPane().setLayout(new BorderLayout(0, 0));
 		
+		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frmEuskoflix.getContentPane().add(tabbedPane, BorderLayout.CENTER);
 		

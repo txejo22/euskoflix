@@ -28,6 +28,7 @@ public class Euskoflix {
 	public static void main(String[] args) throws IOException, URISyntaxException {	
 		Euskoflix.getEuskoflix().cargarEstrucutras();	
 		VentanaMostrarDatos v=new VentanaMostrarDatos();
+		ModeloProducto.getModeloProducto().crearMatrizEtiqProd();
 	}
 	
 	//METODOS

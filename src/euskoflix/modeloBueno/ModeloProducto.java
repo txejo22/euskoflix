@@ -17,6 +17,7 @@ public class ModeloProducto {
 	
 	//ATRIBUTOS
 	private HashMap<Integer,ArrayList<String>> hashmap;
+	private HashMap<Integer, HashMap<String, Integer>> matrizEtiqProd;
 	private static ModeloProducto miModeloProducto;
 	
 	//CONSTRUCTORA
@@ -81,5 +82,40 @@ public class ModeloProducto {
 	    System.out.println("El número total de etiquetas es " + x +" y deberían ser 41980\n");
 	    
 	    return model;   
+	}
+	
+	public void crearMatrizEtiqProd() {
+		matrizEtiqProd=new HashMap<Integer, HashMap<String, Integer>>();
+		HashMap<String, Integer> hm;
+		ArrayList<String> etiquetas=new ArrayList<String>();
+		
+		Integer valor;
+		String e;
+		
+		 for (Map.Entry<?, ?> entry : hashmap.entrySet()) {
+			hm=new HashMap<String, Integer>();
+			etiquetas=(ArrayList<String>) entry.getValue();
+			for(int j=0; j<etiquetas.size(); j++) {
+				e=etiquetas.get(j);
+				if(hm.containsKey(e)) {
+					valor=hm.get(e);
+					hm.put(e, valor+1);
+				}
+				else {
+					hm.put(e, 1);
+				}
+			}
+			matrizEtiqProd.put((Integer) entry.getKey(), hm);
+		}
+		print();
+	}
+	
+	public void print() {
+		HashMap<String, Integer> hm;
+		 for (Map.Entry<?, ?> entry : matrizEtiqProd.entrySet()) {
+		    	hm=(HashMap<String, Integer>) entry.getValue();
+		    	System.out.println(entry.getKey()+" "+hm);
+		    }
+		
 	}
 }
