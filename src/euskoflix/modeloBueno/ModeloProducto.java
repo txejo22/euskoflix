@@ -18,6 +18,7 @@ public class ModeloProducto {
 	//ATRIBUTOS
 	private HashMap<Integer,ArrayList<String>> hashmap;
 	private HashMap<Integer, HashMap<String, Integer>> matrizEtiqProd;
+	private HashMap<Integer, HashMap<String, Double>> modeloProducto;
 	private static ModeloProducto miModeloProducto;
 	
 	//CONSTRUCTORA
@@ -85,6 +86,7 @@ public class ModeloProducto {
 	}
 	
 	public void crearMatrizEtiqProd() {
+		System.out.println("--> CREANDO MATRIZ DE ETIQUETAS DE LOS PRODUCTOS");
 		matrizEtiqProd=new HashMap<Integer, HashMap<String, Integer>>();
 		HashMap<String, Integer> hm;
 		ArrayList<String> etiquetas=new ArrayList<String>();
@@ -107,15 +109,63 @@ public class ModeloProducto {
 			}
 			matrizEtiqProd.put((Integer) entry.getKey(), hm);
 		}
+		 System.out.println("<-- FINALIZADA MATRIZ DE ETIQUETAS DE LOS PRODUCTOS");
+		//print();
+	}
+	
+	public void crearModeloProducto() {
+		System.out.println("--> CREANDO MODELO DE PRODUCTO");
+		modeloProducto=new HashMap<Integer, HashMap<String, Double>>();
+		HashMap<String, Integer> hm;
+		HashMap<String, Double> hm2;
+		Integer movieId;
+		String tag;
+		Double valor;
+		 for (Map.Entry<?, ?> entry : matrizEtiqProd.entrySet()) {
+			 movieId=(Integer) entry.getKey();
+			 hm=(HashMap<String, Integer>) entry.getValue();
+			 hm2=new HashMap<String, Double>();
+			 for (Map.Entry<?, ?> entry2 : hm.entrySet()) {
+				 tag=(String) entry2.getKey();
+				 valor=tfidf(tag, movieId);
+				 hm2.put(tag, valor);
+			 }
+			 modeloProducto.put(movieId, hm2);
+			}
+			//modeloProducto.put((Integer) entry.getKey(), hm);
+		 System.out.println("<-- FINALIZADO MODELO DE PRODUCTO");
 		print();
 	}
 	
 	public void print() {
-		HashMap<String, Integer> hm;
-		 for (Map.Entry<?, ?> entry : matrizEtiqProd.entrySet()) {
-		    	hm=(HashMap<String, Integer>) entry.getValue();
+		HashMap<String, Double> hm;
+		 for (Map.Entry<?, ?> entry : modeloProducto.entrySet()) {
+		    	hm=(HashMap<String, Double>) entry.getValue();
 		    	System.out.println(entry.getKey()+" "+hm);
 		    }
+	}
+	
+	public Double tfidf(String pTag, Integer pMovieId) {
+		Double tfidf=0.0;
+		//formula tfidf(t)=tf x log(N/Nt)
+		Integer tf=matrizEtiqProd.get(pMovieId).get(pTag); //el número de veces que aparece la etiqueta t en una pelicula
+		Integer N=matrizEtiqProd.size(); //el número total de productos
+		Integer Nt=numAparicionesTag(pTag); //el número de productos a los que se aplica la etiqueta t
 		
+		tfidf=tf*Math.log10((double) N/(double) Nt);
+		System.out.println(tfidf);
+		return tfidf;
+	}
+	
+	private Integer numAparicionesTag(String pTag) {
+		Integer rdo=0;
+		HashMap<String, Integer> hm/*=new HashMap<String, Integer> ()*/;
+		 for (Map.Entry<?, ?> entry : matrizEtiqProd.entrySet()) {
+			 hm=(HashMap<String, Integer>) entry.getValue();
+			 if(hm.containsKey(pTag)) {
+				 rdo=rdo+hm.get(pTag);
+			 }
+		 }
+		 return rdo;
 	}
 }

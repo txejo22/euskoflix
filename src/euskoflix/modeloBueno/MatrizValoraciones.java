@@ -15,11 +15,13 @@ public class MatrizValoraciones {
 	
 	//ATRIBUTOS
 	private HashMap<Integer,HashMap<Integer, Double>> hashmap;
+	private HashMap<Integer,HashMap<Integer, Double>> hashmapNormalizada;
 	private static MatrizValoraciones miMatrizValoraciones;
 	
 	//CONSTRUCTORA
 	private MatrizValoraciones() {
 		hashmap=new HashMap<Integer,HashMap<Integer, Double>>();
+		hashmapNormalizada=new HashMap<Integer,HashMap<Integer, Double>>();
 	}
 	
 	//METODOS
@@ -28,6 +30,10 @@ public class MatrizValoraciones {
 			miMatrizValoraciones=new MatrizValoraciones();
 		}
 		return miMatrizValoraciones;
+	}
+	
+	public HashMap<Integer,HashMap<Integer, Double>> getHMNormalizado() {
+		return hashmapNormalizada;
 	}
 	
 	public void cargar(String pPath) throws IOException {
@@ -84,6 +90,36 @@ public class MatrizValoraciones {
 	    System.out.println("El número total de valoraciones es " + x +" y deberían ser 338355\n");
 	    
 	    return model;   
+	}
+	
+	public void normalizarValoraciones() {
+		Integer userId;
+		Integer movieId;
+		Double val;
+		HashMap<Integer, Double> hm2; //sin Normalizar hashmap interno
+		HashMap<Integer, Double> hm3; //Normalizado hasmap interno
+		for (Map.Entry<?, ?> entry : hashmap.entrySet()) {
+			userId=(Integer) entry.getKey();
+			hm2=(HashMap<Integer, Double>) entry.getValue();
+			hm3=new HashMap<Integer, Double>();
+			for (Map.Entry<?, ?> entry2 : hm2.entrySet()) {
+				movieId=(Integer) entry2.getKey();
+				val=(Double) entry2.getValue();
+				val=val-calcularMediaPersona(userId);
+				hm3.put(movieId, val);
+			}
+			hashmapNormalizada.put(userId, hm3);
+		}
+	}
+	
+	private Double calcularMediaPersona(Integer pUserId) {
+		HashMap<Integer, Double> hm=hashmap.get(pUserId);
+		Double media=0.0;
+		for (Map.Entry<?, ?> entry : hm.entrySet()) {
+			media=media+(double)entry.getValue();
+		}
+		media=(double)media/(double)hm.size();
+		return media;
 	}
 	
 }

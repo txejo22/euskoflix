@@ -22,5 +22,19 @@ public class ModeloPersonas {
 		}
 		return miModeloPersonas;
 	}
+	
+	public void crearModeloPersona(HashMap<Integer,HashMap<Integer, Double>> pHMNormalizado, HashMap<Integer,HashMap<Integer, Double>> pHMModeloProductos, Double pUmbral) {
+		
+		
+	}
+	
+	public Double cosV_W(Double pV, Double pW) {
+		Double rdo=0.0;
+		
+		Double suma1; //sumatorio(vi*wi)
+		Double suma2; //srqt(sumatorio(vi^2))*sqrt(sumatorio(wi^2))
+		//cos(V,W)=suma1/suma2
+		return rdo;
+	}
 
 }
