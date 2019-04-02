@@ -13,7 +13,7 @@ import javax.swing.table.TableModel;
 
 public class MatrizValoraciones {
 	
-	//ATRIBUTOS
+	//ATRIBUTOS 
 	private HashMap<Integer,HashMap<Integer, Double>> hashmap;
 	private HashMap<Integer,HashMap<Integer, Double>> hashmapNormalizada;
 	private static MatrizValoraciones miMatrizValoraciones;
