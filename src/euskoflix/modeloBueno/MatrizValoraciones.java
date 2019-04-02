@@ -18,7 +18,7 @@ public class MatrizValoraciones {
 	private HashMap<Integer,HashMap<Integer, Double>> hashmapNormalizada;
 	private static MatrizValoraciones miMatrizValoraciones;
 	
-	//CONSTRUCTORA
+	//CONSTRUCTORA 
 	private MatrizValoraciones() {
 		hashmap=new HashMap<Integer,HashMap<Integer, Double>>();
 		hashmapNormalizada=new HashMap<Integer,HashMap<Integer, Double>>();
