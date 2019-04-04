@@ -27,6 +27,7 @@ public class ModeloProducto {
 	}
 	
 	//METODOS
+	
 	public static ModeloProducto getModeloProducto() {
 		if(miModeloProducto==null) {
 			miModeloProducto=new ModeloProducto();
