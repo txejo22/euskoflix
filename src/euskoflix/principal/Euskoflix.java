@@ -7,6 +7,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 import euskoflix.modeloBueno.MatrizValoraciones;
+import euskoflix.modeloBueno.ModeloPersonas;
 import euskoflix.modeloBueno.ModeloProducto;
 import euskoflix.modeloBueno.MovieTitles;
 import euskoflix.vista.VentanaMostrarDatos;
@@ -31,6 +32,7 @@ public class Euskoflix {
 		ModeloProducto.getModeloProducto().crearMatrizEtiqProd();
 		ModeloProducto.getModeloProducto().crearModeloProducto();
 		//MatrizValoraciones.getValoracionesUsuario().normalizarValoraciones();
+		ModeloPersonas.getModeloPersonas().crearModeloPersona(MatrizValoraciones.getValoracionesUsuario().getHMNormalizado(), ModeloProducto.getModeloProducto().getmodeloProducto(), 3.5);
 	}
 	
 	//METODOS

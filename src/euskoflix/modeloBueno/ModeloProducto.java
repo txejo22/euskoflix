@@ -63,6 +63,9 @@ public class ModeloProducto {
 		}
 	}
 	
+	public HashMap<Integer, HashMap<String, Double>> getmodeloProducto(){
+		return modeloProducto;
+	}
 	
 	public TableModel toTableModelProducto() {
 		System.out.println("--> HASHMAP TO JTABLE MODEL PRODCUTO");
@@ -80,10 +83,12 @@ public class ModeloProducto {
 	    }
 	    
 	    System.out.println("<-- HASHMAP TO JTABLE MODEL PRODUCTO COMPLETADO");
-	    System.out.println("El número total de etiquetas es " + x +" y deberían ser 41980\n");
+	    System.out.println("El nï¿½mero total de etiquetas es " + x +" y deberï¿½an ser 41980\n");
 	    
 	    return model;   
 	}
+	
+	
 	
 	public void crearMatrizEtiqProd() {
 		System.out.println("--> CREANDO MATRIZ DE ETIQUETAS DE LOS PRODUCTOS");
@@ -134,7 +139,7 @@ public class ModeloProducto {
 			}
 			//modeloProducto.put((Integer) entry.getKey(), hm);
 		 System.out.println("<-- FINALIZADO MODELO DE PRODUCTO");
-		print();
+		//print();
 	}
 	
 	public void print() {
@@ -148,12 +153,12 @@ public class ModeloProducto {
 	public Double tfidf(String pTag, Integer pMovieId) {
 		Double tfidf=0.0;
 		//formula tfidf(t)=tf x log(N/Nt)
-		Integer tf=matrizEtiqProd.get(pMovieId).get(pTag); //el número de veces que aparece la etiqueta t en una pelicula
-		Integer N=matrizEtiqProd.size(); //el número total de productos
-		Integer Nt=numAparicionesTag(pTag); //el número de productos a los que se aplica la etiqueta t
+		Integer tf=matrizEtiqProd.get(pMovieId).get(pTag); //el nï¿½mero de veces que aparece la etiqueta t en una pelicula
+		Integer N=matrizEtiqProd.size(); //el nï¿½mero total de productos
+		Integer Nt=numAparicionesTag(pTag); //el nï¿½mero de productos a los que se aplica la etiqueta t
 		
 		tfidf=tf*Math.log10((double) N/(double) Nt);
-		System.out.println(tfidf);
+		//System.out.println(tfidf);
 		return tfidf;
 	}
 	
@@ -163,7 +168,7 @@ public class ModeloProducto {
 		 for (Map.Entry<?, ?> entry : matrizEtiqProd.entrySet()) {
 			 hm=(HashMap<String, Integer>) entry.getValue();
 			 if(hm.containsKey(pTag)) {
-				 rdo=rdo+hm.get(pTag);
+				 rdo=rdo+1;
 			 }
 		 }
 		 return rdo;
