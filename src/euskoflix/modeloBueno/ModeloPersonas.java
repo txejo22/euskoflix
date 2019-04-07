@@ -28,7 +28,7 @@ public class ModeloPersonas {
 	public void crearModeloPersona(HashMap<Integer,HashMap<Integer, Double>> pHMMatrizVal, HashMap<Integer,HashMap<String, Double>> pHMModeloProductos, Double pUmbral) {
 		System.out.println("--> CREANDO MODELO PERSONA");
 		for (Map.Entry<?, ?> entry : pHMMatrizVal.entrySet()) {
-			HashMap<String, Double> val= (HashMap<String, Double>) entry.getValue();
+			HashMap<Integer, Double> val= (HashMap<Integer, Double>) entry.getValue();
 			//ArrayList<Integer> movies=new ArrayList<Integer>();
 			HashMap<Integer,HashMap<String, Double>> mPReducido=new HashMap<Integer,HashMap<String, Double>>();
 			for (Map.Entry<?, ?> entry2 : val.entrySet()) {
@@ -78,7 +78,7 @@ public class ModeloPersonas {
 				if(puntuacion>=pUmbral) {
 					hmAux=pHMModeloProductos.get(entry2.getKey());
 					if(hmAux!=null) {
-						pHMModeloProductoReducido.put((Integer) entry.getKey(), hmAux); //se añade al modelo reducido las peliculas con un umbral > 3.5
+						pHMModeloProductoReducido.put((Integer) entry2.getKey(), hmAux); //se añade al modelo reducido las peliculas con un umbral > 3.5
 					}	
 				}
 			}
@@ -86,32 +86,41 @@ public class ModeloPersonas {
 		}	
 		print();
 		System.out.println("<-- FINALIZADO MODELO PERSONA");
-		
 	}
 	
 	public void sumar(HashMap<Integer, HashMap<String, Double>> pHMModeloProductoReducido, int pUserId) {
 		HashMap<String, Double> hMtfidf=new HashMap<String, Double>();
 		Double tfidf;
+		Double tfidfAux;
 		HashMap<String, Double> hmAux=null;
 		for (Map.Entry<?, ?> entry : pHMModeloProductoReducido.entrySet()) { //por cada pelicula
 			hMtfidf=(HashMap<String, Double>) entry.getValue();
 			for (Map.Entry<?, ?> entry2 : hMtfidf.entrySet()) { //por cada etiqueta
 				tfidf=(Double) entry2.getValue(); //obtenemos su tfidf
-				if(!modeloPersona.containsKey(pUserId)) { //si el modeloPersona no contiene eluserId se crea
+				if(!modeloPersona.containsKey(pUserId)) { //si el modeloPersona no contiene el userId se crea
 					hmAux=new HashMap<String, Double>();
-					hmAux.put((String) entry2.getKey(), tfidf);	
+					hmAux=(HashMap<String, Double>) entry.getValue();
+					modeloPersona.put(pUserId, hmAux);
 				}
-				else if(tfidf.equals(null)) {
-					System.out.println("HOLA");
+				else if(tfidf==null) {
+					tfidf=0.0;
 				}
 				else { //si lo tiene actualiza el valor
 					hmAux=modeloPersona.get(pUserId);
-					hmAux.put((String) entry2.getKey(), (Double) entry2.getValue()+tfidf);
+					tfidfAux=(Double)hmAux.get(entry2.getKey());
+					if(tfidfAux==null) {
+						tfidfAux=0.0;
+					}
+					tfidf=(Double)tfidf+(Double)tfidfAux;
+					hmAux.put((String) entry2.getKey(), (Double)tfidf);
+					modeloPersona.put(pUserId, hmAux);
 				}
-				modeloPersona.put(pUserId, hmAux);
+					
 			}
 		}
+		
 	}
+	
 	private ArrayList<String> guardarEtiquetas(HashMap<Integer,HashMap<String, Double>> pMPReducido){
 		HashMap<String, Double> etiquetas=new HashMap<String, Double>();
 
