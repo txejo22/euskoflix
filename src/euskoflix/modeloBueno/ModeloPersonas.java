@@ -83,9 +83,10 @@ public class ModeloPersonas {
 				}
 			}
 			sumar(pHMModeloProductoReducido, (Integer) entry.getKey());
-		}		
-		System.out.println("<-- FINALIZADO MODELO PERSONA");
+		}	
 		print();
+		System.out.println("<-- FINALIZADO MODELO PERSONA");
+		
 	}
 	
 	public void sumar(HashMap<Integer, HashMap<String, Double>> pHMModeloProductoReducido, int pUserId) {
