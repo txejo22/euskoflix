@@ -140,7 +140,6 @@ public class ModeloProducto {
 			}
 			//modeloProducto.put((Integer) entry.getKey(), hm);
 		 System.out.println("<-- FINALIZADO MODELO DE PRODUCTO");
-		//print();
 	}
 	
 	public void print() {

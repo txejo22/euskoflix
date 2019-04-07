@@ -36,6 +36,10 @@ public class MatrizValoraciones {
 		return hashmapNormalizada;
 	}
 	
+	public HashMap<Integer,HashMap<Integer, Double>> getHMSinNormalizar() {
+		return hashmap;
+	}
+	
 	public void cargar(String pPath) throws IOException {
 		BufferedReader br=null;
 		try {
@@ -93,6 +97,7 @@ public class MatrizValoraciones {
 	}
 	
 	public void normalizarValoraciones() {
+		System.out.println("--> CREANDO MATRIZ DE VALORACIONES NORMALIZADAS");
 		Integer userId;
 		Integer movieId;
 		Double val;
@@ -110,6 +115,7 @@ public class MatrizValoraciones {
 			}
 			hashmapNormalizada.put(userId, hm3);
 		}
+		System.out.println("<-- FINALIZADA MATRIZ DE VALORACIONES NORMALIZADAS");
 	}
 	
 	private Double calcularMediaPersona(Integer pUserId) {

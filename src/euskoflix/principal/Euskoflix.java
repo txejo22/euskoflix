@@ -32,7 +32,7 @@ public class Euskoflix {
 		ModeloProducto.getModeloProducto().crearMatrizEtiqProd();
 		ModeloProducto.getModeloProducto().crearModeloProducto();
 		//MatrizValoraciones.getValoracionesUsuario().normalizarValoraciones();
-		ModeloPersonas.getModeloPersonas().crearModeloPersona(MatrizValoraciones.getValoracionesUsuario().getHMNormalizado(), ModeloProducto.getModeloProducto().getmodeloProducto(), 3.5);
+		ModeloPersonas.getModeloPersonas().crearModeloPersona2(MatrizValoraciones.getValoracionesUsuario().getHMSinNormalizar(), ModeloProducto.getModeloProducto().getmodeloProducto(), 3.5);
 	}
 	
 	//METODOS
