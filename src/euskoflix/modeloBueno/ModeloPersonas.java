@@ -25,6 +25,9 @@ public class ModeloPersonas {
 		return miModeloPersonas;
 	}
 	
+	public HashMap<Integer, HashMap<String, Double>> getModeloPersona() {
+		return modeloPersona;
+	}
 	public void crearModeloPersona(HashMap<Integer,HashMap<Integer, Double>> pHMMatrizVal, HashMap<Integer,HashMap<String, Double>> pHMModeloProductos, Double pUmbral) {
 		System.out.println("--> CREANDO MODELO PERSONA");
 		for (Map.Entry<?, ?> entry : pHMMatrizVal.entrySet()) {
@@ -84,9 +87,7 @@ public class ModeloPersonas {
 			}
 			sumar(pHMModeloProductoReducido, (Integer) entry.getKey());
 		}	
-		System.out.println(modeloPersona);
 		System.out.println("<-- FINALIZADO MODELO PERSONA");
-		System.out.println(modeloPersona.size());
 	}
 	
 	public void sumar(HashMap<Integer, HashMap<String, Double>> pHMModeloProductoReducido, int pUserId) {
@@ -101,7 +102,6 @@ public class ModeloPersonas {
 				if(!modeloPersona.containsKey(pUserId)) { //si el modeloPersona no contiene el userId se crea
 					hmAux=new HashMap<String, Double>();
 					hmAux=hMtfidf;
-					//modeloPersona.put(pUserId, hmAux);
 				}
 				else if(tfidf==null) {
 					tfidf=0.0;
@@ -114,7 +114,6 @@ public class ModeloPersonas {
 					}
 					tfidf=(Double)tfidf+(Double)tfidfAux;
 					hmAux.put((String) entry2.getKey(), (Double)tfidf);
-					//modeloPersona.put(pUserId, hmAux);
 				}
 				modeloPersona.put(pUserId, hmAux);		
 			}
@@ -126,11 +125,8 @@ public class ModeloPersonas {
 
 		ArrayList<String> rdo=new ArrayList<String>();
 		for (Map.Entry<?, ?> entry : pMPReducido.entrySet()) {
-			System.out.println(pMPReducido.get(4097));
 			etiquetas=(HashMap<String, Double>) entry.getValue();
-
 			for (Map.Entry<?, ?> entry2 : etiquetas.entrySet()) {
-				
 					if(!rdo.contains(entry2.getKey())){
 						rdo.add((String) entry2.getKey());
 					}
@@ -142,13 +138,48 @@ public class ModeloPersonas {
 		return rdo;
 	}
 	
-	public Double cosV_W(Double pV, Double pW) {
+	public Double cosV_W(HashMap<String, Double> pV, HashMap<String, Double> pW) {
+		//sumatorio(vi*wi)
+		 //srqt(sumatorio(vi^2))*sqrt(sumatorio(wi^2))
+		//cos(V,W)=suma1/suma2
+		Double rdo=0.0;
+		Double suma1=0.0;
+		Double suma2=0.0;
+		Double suma3=0.0;
+		for (Map.Entry<?, ?> entry : pV.entrySet()) {
+			if(pW.containsKey(entry.getKey())) {
+				suma1=suma1+((Double)entry.getValue()*pW.get((String)entry.getKey()));
+				suma2=suma2+Math.pow((Double)entry.getValue(), 2);
+				suma3=suma3+Math.pow(pW.get((String)entry.getKey()), 2);
+			}
+		}
+		Double denominador=Math.sqrt(suma2)*Math.sqrt(suma3);
+		rdo=(Double)suma1/(Double)denominador;
+		return rdo;
+	}
+	
+	public HashMap<Integer,HashMap<Integer,Double>> crearSimilitud(HashMap<Integer,HashMap<String, Double>> pHMModeloProductos,HashMap<Integer, HashMap<String, Double>> pModeloPersona){
+		HashMap<Integer,HashMap<Integer,Double>> matrizSimilitud=new HashMap<Integer,HashMap<Integer,Double>>();
+		HashMap<Integer, Double> hm;
+		
+		HashMap<String, Double> vi=null;
+		HashMap<String, Double> wi=null;
 		Double rdo=0.0;
 		
-		Double suma1; //sumatorio(vi*wi)
-		Double suma2; //srqt(sumatorio(vi^2))*sqrt(sumatorio(wi^2))
-		//cos(V,W)=suma1/suma2
-		return rdo;
+		for (Map.Entry<?, ?> entry : pHMModeloProductos.entrySet()) {
+			vi=(HashMap<String, Double>) entry.getValue();
+			hm=new HashMap<Integer, Double>();
+			for (Map.Entry<?, ?> entry2 : pModeloPersona.entrySet()) {
+				wi=(HashMap<String, Double>) entry2.getValue();
+				rdo=cosV_W(vi, wi);
+				hm.put((Integer) entry2.getKey(), rdo);
+			}
+			matrizSimilitud.put((Integer) entry.getKey(), hm);
+		}
+		 for (Map.Entry<?, ?> entry : matrizSimilitud.entrySet()) {
+		    	System.out.println(entry.getKey()+" "+(HashMap<Integer, Double>) entry.getValue());
+		}
+		return matrizSimilitud;
 	}
 	
 	public void print() {
