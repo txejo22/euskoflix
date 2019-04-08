@@ -84,8 +84,9 @@ public class ModeloPersonas {
 			}
 			sumar(pHMModeloProductoReducido, (Integer) entry.getKey());
 		}	
-		print();
+		System.out.println(modeloPersona);
 		System.out.println("<-- FINALIZADO MODELO PERSONA");
+		System.out.println(modeloPersona.size());
 	}
 	
 	public void sumar(HashMap<Integer, HashMap<String, Double>> pHMModeloProductoReducido, int pUserId) {
@@ -99,8 +100,8 @@ public class ModeloPersonas {
 				tfidf=(Double) entry2.getValue(); //obtenemos su tfidf
 				if(!modeloPersona.containsKey(pUserId)) { //si el modeloPersona no contiene el userId se crea
 					hmAux=new HashMap<String, Double>();
-					hmAux=(HashMap<String, Double>) entry.getValue();
-					modeloPersona.put(pUserId, hmAux);
+					hmAux=hMtfidf;
+					//modeloPersona.put(pUserId, hmAux);
 				}
 				else if(tfidf==null) {
 					tfidf=0.0;
@@ -113,12 +114,11 @@ public class ModeloPersonas {
 					}
 					tfidf=(Double)tfidf+(Double)tfidfAux;
 					hmAux.put((String) entry2.getKey(), (Double)tfidf);
-					modeloPersona.put(pUserId, hmAux);
+					//modeloPersona.put(pUserId, hmAux);
 				}
-					
+				modeloPersona.put(pUserId, hmAux);		
 			}
 		}
-		
 	}
 	
 	private ArrayList<String> guardarEtiquetas(HashMap<Integer,HashMap<String, Double>> pMPReducido){

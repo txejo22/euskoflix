@@ -31,7 +31,6 @@ public class Euskoflix {
 		VentanaMostrarDatos v=new VentanaMostrarDatos();
 		ModeloProducto.getModeloProducto().crearMatrizEtiqProd();
 		ModeloProducto.getModeloProducto().crearModeloProducto();
-		//MatrizValoraciones.getValoracionesUsuario().normalizarValoraciones();
 		ModeloPersonas.getModeloPersonas().crearModeloPersona2(MatrizValoraciones.getValoracionesUsuario().getHMSinNormalizar(), ModeloProducto.getModeloProducto().getmodeloProducto(), 3.5);
 	}
 	
