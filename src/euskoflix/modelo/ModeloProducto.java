@@ -1,4 +1,4 @@
-package euskoflix.modeloBueno;
+package euskoflix.modelo;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -18,7 +18,7 @@ public class ModeloProducto {
 	//ATRIBUTOS
 	private HashMap<Integer,ArrayList<String>> hashmap;
 	private HashMap<Integer, HashMap<String, Integer>> matrizEtiqProd;
-	private HashMap<Integer, HashMap<String, Double>> modeloProducto;
+	private HMStringDouble modeloProducto;
 	private static ModeloProducto miModeloProducto;
 	
 	//CONSTRUCTORA
@@ -64,10 +64,6 @@ public class ModeloProducto {
 		}
 	}
 	
-	public HashMap<Integer, HashMap<String, Double>> getmodeloProducto(){
-		return modeloProducto;
-	}
-	
 	public TableModel toTableModelProducto() {
 		System.out.println("--> HASHMAP TO JTABLE MODEL PRODCUTO");
 	    DefaultTableModel model = new DefaultTableModel(
@@ -89,10 +85,8 @@ public class ModeloProducto {
 	    return model;   
 	}
 	
-	
-	
-	public void crearMatrizEtiqProd() {
-		System.out.println("--> CREANDO MATRIZ DE ETIQUETAS DE LOS PRODUCTOS");
+	private void crearMatrizEtiqProd() {
+		System.out.println("\t--> CREANDO MATRIZ DE ETIQUETAS DE LOS PRODUCTOS");
 		matrizEtiqProd=new HashMap<Integer, HashMap<String, Integer>>();
 		HashMap<String, Integer> hm;
 		ArrayList<String> etiquetas=new ArrayList<String>();
@@ -115,13 +109,13 @@ public class ModeloProducto {
 			}
 			matrizEtiqProd.put((Integer) entry.getKey(), hm);
 		}
-		 System.out.println("<-- FINALIZADA MATRIZ DE ETIQUETAS DE LOS PRODUCTOS");
-		//print();
+		 System.out.println("\t<-- FINALIZADA MATRIZ DE ETIQUETAS DE LOS PRODUCTOS");
 	}
 	
-	public void crearModeloProducto() {
+	public HMStringDouble crearModeloProducto() {
 		System.out.println("--> CREANDO MODELO DE PRODUCTO");
-		modeloProducto=new HashMap<Integer, HashMap<String, Double>>();
+		crearMatrizEtiqProd();
+		modeloProducto=new HMStringDouble();
 		HashMap<String, Integer> hm;
 		HashMap<String, Double> hm2;
 		Integer movieId;
@@ -138,18 +132,11 @@ public class ModeloProducto {
 			 }
 			 modeloProducto.put(movieId, hm2);
 			}
-		 System.out.println("<-- FINALIZADO MODELO DE PRODUCTO");
+		 System.out.println("<-- FINALIZADO MODELO DE PRODUCTO\n");
+		 return modeloProducto;
 	}
 	
-	public void print() {
-		HashMap<String, Double> hm;
-		 for (Map.Entry<?, ?> entry : modeloProducto.entrySet()) {
-		    	hm=(HashMap<String, Double>) entry.getValue();
-		    	System.out.println(entry.getKey()+" "+hm);
-		    }
-	}
-	
-	public Double tfidf(String pTag, Integer pMovieId) {
+	private Double tfidf(String pTag, Integer pMovieId) {
 		Double tfidf=0.0;
 		//formula tfidf(t)=tf x log(N/Nt)
 		Integer tf=matrizEtiqProd.get(pMovieId).get(pTag); //el n�mero de veces que aparece la etiqueta t en una pelicula

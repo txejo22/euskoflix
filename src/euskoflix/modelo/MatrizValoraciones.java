@@ -1,4 +1,4 @@
-package euskoflix.modeloBueno;
+package euskoflix.modelo;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -14,14 +14,12 @@ import javax.swing.table.TableModel;
 public class MatrizValoraciones {
 	
 	//ATRIBUTOS 
-	private HashMap<Integer,HashMap<Integer, Double>> hashmap;
-	private HashMap<Integer,HashMap<Integer, Double>> hashmapNormalizada;
+	private HMIntegerDouble hashmap;
 	private static MatrizValoraciones miMatrizValoraciones;
 	
 	//CONSTRUCTORA 
 	private MatrizValoraciones() {
-		hashmap=new HashMap<Integer,HashMap<Integer, Double>>();
-		hashmapNormalizada=new HashMap<Integer,HashMap<Integer, Double>>();
+		hashmap=new HMIntegerDouble();
 	}
 	
 	//METODOS
@@ -32,11 +30,7 @@ public class MatrizValoraciones {
 		return miMatrizValoraciones;
 	}
 	
-	public HashMap<Integer,HashMap<Integer, Double>> getHMNormalizado() {
-		return hashmapNormalizada;
-	}
-	
-	public HashMap<Integer,HashMap<Integer, Double>> getHMSinNormalizar() {
+	public HMIntegerDouble getMatriz() {
 		return hashmap;
 	}
 	
@@ -62,7 +56,7 @@ public class MatrizValoraciones {
 				else {
 					valoraciones=new HashMap<Integer, Double>();
 				}
-				MatrizValoraciones.getValoracionesUsuario().hashmap.put(movieId,valoraciones);
+				MatrizValoraciones.getValoracionesUsuario().hashmap.getHashMap().put(movieId,valoraciones);
 				linea=br.readLine();
 			}
 			br.close();
@@ -96,7 +90,9 @@ public class MatrizValoraciones {
 	    return model;   
 	}
 	
-	public void normalizarValoraciones() {
+	
+	//SOLO SI SE DESEA NORMALIZAR
+	/*public void normalizarValoraciones() {
 		System.out.println("--> CREANDO MATRIZ DE VALORACIONES NORMALIZADAS");
 		Integer userId;
 		Integer movieId;
@@ -113,7 +109,7 @@ public class MatrizValoraciones {
 				val=val-calcularMediaPersona(userId);
 				hm3.put(movieId, val);
 			}
-			hashmapNormalizada.put(userId, hm3);
+			hashmap.put(userId, hm3);
 		}
 		System.out.println("<-- FINALIZADA MATRIZ DE VALORACIONES NORMALIZADAS");
 	}
@@ -126,6 +122,6 @@ public class MatrizValoraciones {
 		}
 		media=(double)media/(double)hm.size();
 		return media;
-	}
+	}*/
 	
 }

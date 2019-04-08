@@ -7,10 +7,10 @@ import java.awt.BorderLayout;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import euskoflix.modeloBueno.MatrizValoraciones;
-import euskoflix.modeloBueno.ModeloPersonas;
-import euskoflix.modeloBueno.ModeloProducto;
-import euskoflix.modeloBueno.MovieTitles;
+import euskoflix.modelo.MatrizValoraciones;
+import euskoflix.modelo.ModeloPersonas;
+import euskoflix.modelo.ModeloProducto;
+import euskoflix.modelo.MovieTitles;
 
 public class VentanaMostrarDatos extends JFrame{
 

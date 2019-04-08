@@ -6,10 +6,12 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import euskoflix.modeloBueno.MatrizValoraciones;
-import euskoflix.modeloBueno.ModeloPersonas;
-import euskoflix.modeloBueno.ModeloProducto;
-import euskoflix.modeloBueno.MovieTitles;
+import euskoflix.modelo.HMIntegerDouble;
+import euskoflix.modelo.HMStringDouble;
+import euskoflix.modelo.MatrizValoraciones;
+import euskoflix.modelo.ModeloPersonas;
+import euskoflix.modelo.ModeloProducto;
+import euskoflix.modelo.MovieTitles;
 import euskoflix.vista.VentanaMostrarDatos;
 
 public class Euskoflix {
@@ -28,11 +30,12 @@ public class Euskoflix {
 	//MAIN
 	public static void main(String[] args) throws IOException, URISyntaxException {	
 		Euskoflix.getEuskoflix().cargarEstrucutras();	
-		VentanaMostrarDatos v=new VentanaMostrarDatos();
-		ModeloProducto.getModeloProducto().crearMatrizEtiqProd();
-		ModeloProducto.getModeloProducto().crearModeloProducto();
-		ModeloPersonas.getModeloPersonas().crearModeloPersona2(MatrizValoraciones.getValoracionesUsuario().getHMSinNormalizar(), ModeloProducto.getModeloProducto().getmodeloProducto(), 3.5);
-		ModeloPersonas.getModeloPersonas().crearSimilitud(ModeloProducto.getModeloProducto().getmodeloProducto(), ModeloPersonas.getModeloPersonas().getModeloPersona());
+		//VentanaMostrarDatos v=new VentanaMostrarDatos();
+		HMIntegerDouble matrizValoraciones=MatrizValoraciones.getValoracionesUsuario().getMatriz();
+		HMStringDouble modeloProducto=ModeloProducto.getModeloProducto().crearModeloProducto();
+		HMStringDouble modeloPersona=ModeloPersonas.getModeloPersonas().crearModeloPersona(matrizValoraciones, modeloProducto, 3.5);
+		HMIntegerDouble matrizSimilitud=ModeloPersonas.getModeloPersonas().crearSimilitud(modeloProducto, modeloPersona);
+		matrizSimilitud.print();
 	}
 	
 	//METODOS
