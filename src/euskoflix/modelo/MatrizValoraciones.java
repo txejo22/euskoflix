@@ -14,12 +14,12 @@ import javax.swing.table.TableModel;
 public class MatrizValoraciones {
 	
 	//ATRIBUTOS 
-	private HMIntegerDouble hashmap;
+	private HMIntegerDouble matrizValoraciones;
 	private static MatrizValoraciones miMatrizValoraciones;
 	
 	//CONSTRUCTORA 
 	private MatrizValoraciones() {
-		hashmap=new HMIntegerDouble();
+		matrizValoraciones=new HMIntegerDouble();
 	}
 	
 	//METODOS
@@ -31,7 +31,7 @@ public class MatrizValoraciones {
 	}
 	
 	public HMIntegerDouble getMatriz() {
-		return hashmap;
+		return matrizValoraciones;
 	}
 	
 	public void cargar(String pPath) throws IOException {
@@ -49,14 +49,14 @@ public class MatrizValoraciones {
 				int movieId=Integer.parseInt(datos[1]);
 				Double valoracion=Double.parseDouble(datos[2]);
 				
-				if(MatrizValoraciones.getValoracionesUsuario().hashmap.containsKey(movieId)) {
-					valoraciones=MatrizValoraciones.getValoracionesUsuario().hashmap.get(movieId);
+				if(MatrizValoraciones.getValoracionesUsuario().matrizValoraciones.containsKey(movieId)) {
+					valoraciones=MatrizValoraciones.getValoracionesUsuario().matrizValoraciones.get(movieId);
 					valoraciones.put(userId, valoracion);
 				}
 				else {
 					valoraciones=new HashMap<Integer, Double>();
 				}
-				MatrizValoraciones.getValoracionesUsuario().hashmap.getHashMap().put(movieId,valoraciones);
+				MatrizValoraciones.getValoracionesUsuario().matrizValoraciones.getHashMap().put(movieId,valoraciones);
 				linea=br.readLine();
 			}
 			br.close();
@@ -75,7 +75,7 @@ public class MatrizValoraciones {
 	    HashMap<Integer, Double> valoraciones;
 	    int x=0;
 	  
-	    for (Map.Entry<?, ?> entry : hashmap.entrySet()) {
+	    for (Map.Entry<?, ?> entry : matrizValoraciones.entrySet()) {
 	    	valoraciones=(HashMap<Integer, Double>) entry.getValue();
 	    	for (Map.Entry<?, ?> entryAux : valoraciones.entrySet()) {
 	    		model.addRow(new Object[] { entryAux.getKey(), entry.getKey() , entryAux.getValue()});

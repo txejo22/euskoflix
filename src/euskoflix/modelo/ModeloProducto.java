@@ -17,7 +17,6 @@ public class ModeloProducto {
 	
 	//ATRIBUTOS
 	private HashMap<Integer,ArrayList<String>> hashmap;
-	private HashMap<Integer, HashMap<String, Integer>> matrizEtiqProd;
 	private HMStringDouble modeloProducto;
 	private static ModeloProducto miModeloProducto;
 	
@@ -85,9 +84,9 @@ public class ModeloProducto {
 	    return model;   
 	}
 	
-	private void crearMatrizEtiqProd() {
+	private HashMap<Integer, HashMap<String, Integer>> crearMatrizEtiqProd() {
 		System.out.println("\t--> CREANDO MATRIZ DE ETIQUETAS DE LOS PRODUCTOS");
-		matrizEtiqProd=new HashMap<Integer, HashMap<String, Integer>>();
+		HashMap<Integer, HashMap<String, Integer>> matrizEtiqProd=new HashMap<Integer, HashMap<String, Integer>>();
 		HashMap<String, Integer> hm;
 		ArrayList<String> etiquetas=new ArrayList<String>();
 		
@@ -110,11 +109,12 @@ public class ModeloProducto {
 			matrizEtiqProd.put((Integer) entry.getKey(), hm);
 		}
 		 System.out.println("\t<-- FINALIZADA MATRIZ DE ETIQUETAS DE LOS PRODUCTOS");
+		 return matrizEtiqProd;
 	}
 	
 	public HMStringDouble crearModeloProducto() {
 		System.out.println("--> CREANDO MODELO DE PRODUCTO");
-		crearMatrizEtiqProd();
+		HashMap<Integer, HashMap<String, Integer>> matrizEtiqProd=crearMatrizEtiqProd();
 		modeloProducto=new HMStringDouble();
 		HashMap<String, Integer> hm;
 		HashMap<String, Double> hm2;
@@ -127,7 +127,7 @@ public class ModeloProducto {
 			 hm2=new HashMap<String, Double>();
 			 for (Map.Entry<?, ?> entry2 : hm.entrySet()) {
 				 tag=(String) entry2.getKey();
-				 valor=tfidf(tag, movieId);
+				 valor=tfidf(tag, movieId, matrizEtiqProd);
 				 hm2.put(tag, valor);
 			 }
 			 modeloProducto.put(movieId, hm2);
@@ -136,20 +136,20 @@ public class ModeloProducto {
 		 return modeloProducto;
 	}
 	
-	private Double tfidf(String pTag, Integer pMovieId) {
+	private Double tfidf(String pTag, Integer pMovieId, HashMap<Integer, HashMap<String, Integer>> pMatrizEtiqProd) {
 		Double tfidf=0.0;
 		//formula tfidf(t)=tf x log(N/Nt)
-		Integer tf=matrizEtiqProd.get(pMovieId).get(pTag); //el n�mero de veces que aparece la etiqueta t en una pelicula
-		Integer N=matrizEtiqProd.size(); //el n�mero total de productos
-		Integer Nt=numAparicionesTag(pTag); //el n�mero de productos a los que se aplica la etiqueta t
+		Integer tf=pMatrizEtiqProd.get(pMovieId).get(pTag); //el n�mero de veces que aparece la etiqueta t en una pelicula
+		Integer N=pMatrizEtiqProd.size(); //el n�mero total de productos
+		Integer Nt=numAparicionesTag(pTag,pMatrizEtiqProd); //el n�mero de productos a los que se aplica la etiqueta t
 		tfidf=tf*Math.log10((double) N/(double) Nt);
 		return tfidf;
 	}
 	
-	private Integer numAparicionesTag(String pTag) {
+	private Integer numAparicionesTag(String pTag,HashMap<Integer, HashMap<String, Integer>> pMatrizEtiqProd) {
 		Integer rdo=0;
 		HashMap<String, Integer> hm;
-		 for (Map.Entry<?, ?> entry : matrizEtiqProd.entrySet()) {
+		 for (Map.Entry<?, ?> entry : pMatrizEtiqProd.entrySet()) {
 			 hm=(HashMap<String, Integer>) entry.getValue();
 			 if(hm.containsKey(pTag)) {
 				 rdo=rdo+1;

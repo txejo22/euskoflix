@@ -25,7 +25,7 @@ public class ModeloPersonas {
 		return miModeloPersonas;
 	}
 	
-	public HMStringDouble crearModeloPersona(HMIntegerDouble pHMMatrizVal, HMStringDouble pHMModeloProductos, Double pUmbral) {
+	public HMStringDouble crearModeloPersona(HMIntegerDouble pHMMatrizVal, HMStringDouble pHMModeloProducto, Double pUmbral) {
 		System.out.println("--> CREANDO MODELO PERSONA");
 		HashMap<Integer, Double> movieVal=new HashMap<Integer, Double>();
 		Double puntuacion;
@@ -37,7 +37,7 @@ public class ModeloPersonas {
 			for (Map.Entry<?, ?> entry2 : movieVal.entrySet()) { //por cada pelicula
 				puntuacion=(Double) entry2.getValue(); //obtenemos su puntuacion
 				if(puntuacion>=pUmbral) {
-					hmAux=pHMModeloProductos.get((Integer) entry2.getKey());
+					hmAux=pHMModeloProducto.get((Integer) entry2.getKey());
 					if(hmAux!=null) {
 						pHMModeloProductoReducido.put((Integer) entry2.getKey(), hmAux); //se añade al modelo reducido las peliculas con un umbral > 3.5
 					}	
@@ -99,7 +99,7 @@ public class ModeloPersonas {
 		return rdo;
 	}
 	
-	public HMIntegerDouble crearSimilitud(HMStringDouble pHMModeloProductos,HMStringDouble pModeloPersona){
+	public HMIntegerDouble crearSimilitud(HMStringDouble pHMModeloProducto,HMStringDouble pModeloPersona){
 		System.out.println("--> CREANDO MATRIZ DE SIMILITUD");
 		HMIntegerDouble matrizSimilitud=new HMIntegerDouble();
 		HashMap<Integer, Double> hm;
@@ -108,7 +108,7 @@ public class ModeloPersonas {
 		HashMap<String, Double> wi=null;
 		Double rdo=0.0;
 		
-		for (Map.Entry<?, ?> entry : pHMModeloProductos.entrySet()) {
+		for (Map.Entry<?, ?> entry : pHMModeloProducto.entrySet()) {
 			vi=(HashMap<String, Double>) entry.getValue();
 			hm=new HashMap<Integer, Double>();
 			for (Map.Entry<?, ?> entry2 : pModeloPersona.entrySet()) {
