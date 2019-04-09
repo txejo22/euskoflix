@@ -30,12 +30,13 @@ public class Euskoflix {
 	//MAIN
 	public static void main(String[] args) throws IOException, URISyntaxException {	
 		Euskoflix.getEuskoflix().cargarEstrucutras();	
-		//VentanaMostrarDatos v=new VentanaMostrarDatos();
+		VentanaMostrarDatos v=new VentanaMostrarDatos();
 		HMIntegerDouble matrizValoraciones=MatrizValoraciones.getValoracionesUsuario().getMatriz();
 		HMStringDouble modeloProducto=ModeloProducto.getModeloProducto().crearModeloProducto();
 		HMStringDouble modeloPersona=ModeloPersonas.getModeloPersonas().crearModeloPersona(matrizValoraciones, modeloProducto, 3.5);
 		HMIntegerDouble matrizSimilitud=ModeloPersonas.getModeloPersonas().crearSimilitud(modeloProducto, modeloPersona);
-		matrizSimilitud.print();
+		//matrizSimilitud.print();
+		System.out.println(matrizSimilitud.get(807).get(4045));
 	}
 	
 	//METODOS

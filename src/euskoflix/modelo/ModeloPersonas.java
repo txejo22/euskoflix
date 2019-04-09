@@ -29,17 +29,17 @@ public class ModeloPersonas {
 		System.out.println("--> CREANDO MODELO PERSONA");
 		HashMap<Integer, Double> movieVal=new HashMap<Integer, Double>();
 		Double puntuacion;
-		HashMap<String, Double> hmAux=new HashMap<String, Double>();
 		
 		for (Map.Entry<?, ?> entry : pHMMatrizVal.entrySet()) { //por cada usuario
 			movieVal=(HashMap<Integer, Double>) entry.getValue(); //Obtenemos por cada usuario las peliculas y sus puntuaciones
 			HMStringDouble pHMModeloProductoReducido=new HMStringDouble();
 			for (Map.Entry<?, ?> entry2 : movieVal.entrySet()) { //por cada pelicula
+				HashMap<String, Double> hmAux=new HashMap<String, Double>();
 				puntuacion=(Double) entry2.getValue(); //obtenemos su puntuacion
 				if(puntuacion>=pUmbral) {
 					hmAux=pHMModeloProducto.get((Integer) entry2.getKey());
 					if(hmAux!=null) {
-						pHMModeloProductoReducido.put((Integer) entry2.getKey(), hmAux); //se añade al modelo reducido las peliculas con un umbral > 3.5
+						pHMModeloProductoReducido.put((Integer) entry2.getKey(), hmAux); //se aï¿½ade al modelo reducido las peliculas con un umbral > 3.5
 					}	
 				}
 			}
@@ -53,30 +53,31 @@ public class ModeloPersonas {
 		HashMap<String, Double> hMtfidf=new HashMap<String, Double>();
 		Double tfidf;
 		Double tfidfAux;
-		HashMap<String, Double> hmAux=null;
+		
 		for (Map.Entry<?, ?> entry : pHMModeloProductoReducido.entrySet()) { //por cada pelicula
 			hMtfidf=(HashMap<String, Double>) entry.getValue();
-			for (Map.Entry<?, ?> entry2 : hMtfidf.entrySet()) { //por cada etiqueta
+			HashMap<String, Double> hmAux=new HashMap<String, Double>();
+			if(!modeloPersona.containsKey(pUserId)) { //si el modeloPersona no contiene el userId se crea
+				hmAux=new HashMap<String, Double>();
+				hmAux=hMtfidf;	
+			}
+			else {
+				for (Map.Entry<?, ?> entry2 : hMtfidf.entrySet()) { //por cada etiqueta
 				tfidf=(Double) entry2.getValue(); //obtenemos su tfidf
-				if(!modeloPersona.containsKey(pUserId)) { //si el modeloPersona no contiene el userId se crea
-					hmAux=new HashMap<String, Double>();
-					hmAux=hMtfidf;
-				}
-				else if(tfidf==null) {
-					tfidf=0.0;
-				}
-				else { //si lo tiene actualiza el valor
+				//si lo tiene actualiza el valor
 					hmAux=modeloPersona.get(pUserId);
 					tfidfAux=(Double)hmAux.get(entry2.getKey());
+					
 					if(tfidfAux==null) {
 						tfidfAux=0.0;
 					}
 					tfidf=(Double)tfidf+(Double)tfidfAux;
 					hmAux.put((String) entry2.getKey(), (Double)tfidf);
-				}
-				modeloPersona.put(pUserId, hmAux);		
+				}		
 			}
+			modeloPersona.put(pUserId, hmAux);
 		}
+		//modeloPersona.print();
 	}
 	
 	private Double cosV_W(HashMap<String, Double> pV, HashMap<String, Double> pW) {

@@ -49,14 +49,14 @@ public class MatrizValoraciones {
 				int movieId=Integer.parseInt(datos[1]);
 				Double valoracion=Double.parseDouble(datos[2]);
 				
-				if(MatrizValoraciones.getValoracionesUsuario().matrizValoraciones.containsKey(movieId)) {
-					valoraciones=MatrizValoraciones.getValoracionesUsuario().matrizValoraciones.get(movieId);
-					valoraciones.put(userId, valoracion);
+				if(MatrizValoraciones.getValoracionesUsuario().matrizValoraciones.containsKey(userId)) {
+					valoraciones=MatrizValoraciones.getValoracionesUsuario().matrizValoraciones.get(userId);
+					valoraciones.put(movieId, valoracion);
 				}
 				else {
 					valoraciones=new HashMap<Integer, Double>();
 				}
-				MatrizValoraciones.getValoracionesUsuario().matrizValoraciones.getHashMap().put(movieId,valoraciones);
+				MatrizValoraciones.getValoracionesUsuario().matrizValoraciones.getHashMap().put(userId,valoraciones);
 				linea=br.readLine();
 			}
 			br.close();
@@ -69,8 +69,7 @@ public class MatrizValoraciones {
 	public TableModel toTableMatrizValoraciones() {
 		System.out.println("--> HASHMAP TO JTABLE MATRIZ VALORACIONES");
 	    DefaultTableModel model = new DefaultTableModel(
-	        new Object[] { "UserId", "MovieId", "Rating" }, 0
-	    );
+	        new Object[] { "UserId", "MovieId", "Rating" },0);
 	   
 	    HashMap<Integer, Double> valoraciones;
 	    int x=0;
@@ -85,7 +84,7 @@ public class MatrizValoraciones {
 	    }    
 	    
 	    System.out.println("<-- HASHMAP TO JTABLE MODEL MATRIZ VALORACIONES COMPLETADO");
-	    System.out.println("El número total de valoraciones es " + x +" y deberían ser 338355\n");
+	    System.out.println("El nï¿½mero total de valoraciones es " + x +" y deberï¿½an ser 338355\n");
 	    
 	    return model;   
 	}
