@@ -139,9 +139,9 @@ public class ModeloProducto {
 	private Double tfidf(String pTag, Integer pMovieId, HashMap<Integer, HashMap<String, Integer>> pMatrizEtiqProd) {
 		Double tfidf=0.0;
 		//formula tfidf(t)=tf x log(N/Nt)
-		Integer tf=pMatrizEtiqProd.get(pMovieId).get(pTag); //el n�mero de veces que aparece la etiqueta t en una pelicula
-		Integer N=pMatrizEtiqProd.size(); //el n�mero total de productos
-		Integer Nt=numAparicionesTag(pTag,pMatrizEtiqProd); //el n�mero de productos a los que se aplica la etiqueta t
+		Integer tf=pMatrizEtiqProd.get(pMovieId).get(pTag); //el numero de veces que aparece la etiqueta t en una pelicula
+		Integer N=pMatrizEtiqProd.size(); //el numero total de productos
+		Integer Nt=numAparicionesTag(pTag,pMatrizEtiqProd); //el numero de productos a los que se aplica la etiqueta t
 		tfidf=tf*Math.log10((double) N/(double) Nt);
 		return tfidf;
 	}

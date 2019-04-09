@@ -1,10 +1,13 @@
 package euskoflix.principal;
 
-import java.io.File;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import euskoflix.modelo.HMIntegerDouble;
 import euskoflix.modelo.HMStringDouble;
@@ -22,6 +25,8 @@ public class Euskoflix {
 	private static String movie_tags="./src/euskoflix/archivos/movie_tags.csv";
 	private static String movie_titles="./src/euskoflix/archivos/movie_titles.csv";
 	
+	private static String mSim="./src/euskoflix/archivos/matrizSimilitud.txt";
+	
 	private static Euskoflix miEuskoflix;
 	
 	//CONTRUCTORA
@@ -30,13 +35,19 @@ public class Euskoflix {
 	//MAIN
 	public static void main(String[] args) throws IOException, URISyntaxException {	
 		Euskoflix.getEuskoflix().cargarEstrucutras();	
-		VentanaMostrarDatos v=new VentanaMostrarDatos();
+		//VentanaMostrarDatos v=new VentanaMostrarDatos();
 		HMIntegerDouble matrizValoraciones=MatrizValoraciones.getValoracionesUsuario().getMatriz();
 		HMStringDouble modeloProducto=ModeloProducto.getModeloProducto().crearModeloProducto();
 		HMStringDouble modeloPersona=ModeloPersonas.getModeloPersonas().crearModeloPersona(matrizValoraciones, modeloProducto, 3.5);
 		HMIntegerDouble matrizSimilitud=ModeloPersonas.getModeloPersonas().crearSimilitud(modeloProducto, modeloPersona);
-		//matrizSimilitud.print();
+		//
+		System.out.println(matrizSimilitud.get(2164).get(4045));
+		System.out.println(matrizSimilitud.get(63).get(4045));
 		System.out.println(matrizSimilitud.get(807).get(4045));
+		System.out.println(matrizSimilitud.get(187).get(4045));
+		System.out.println(matrizSimilitud.get(11).get(4045));
+		
+		matrizSimilitud.hashmap2txt(mSim);
 	}
 	
 	//METODOS

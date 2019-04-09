@@ -36,10 +36,10 @@ public class ModeloPersonas {
 			for (Map.Entry<?, ?> entry2 : movieVal.entrySet()) { //por cada pelicula
 				HashMap<String, Double> hmAux=new HashMap<String, Double>();
 				puntuacion=(Double) entry2.getValue(); //obtenemos su puntuacion
-				if(puntuacion>=pUmbral) {
+				if(puntuacion>=pUmbral) { //si la putuación es superior al umbral
 					hmAux=pHMModeloProducto.get((Integer) entry2.getKey());
 					if(hmAux!=null) {
-						pHMModeloProductoReducido.put((Integer) entry2.getKey(), hmAux); //se aï¿½ade al modelo reducido las peliculas con un umbral > 3.5
+						pHMModeloProductoReducido.put((Integer) entry2.getKey(), hmAux); //se anade al modelo reducido las peliculas con un umbral > 3.5
 					}	
 				}
 			}
@@ -55,20 +55,25 @@ public class ModeloPersonas {
 		Double tfidfAux;
 		
 		for (Map.Entry<?, ?> entry : pHMModeloProductoReducido.entrySet()) { //por cada pelicula
-			hMtfidf=(HashMap<String, Double>) entry.getValue();
+			hMtfidf=(HashMap<String, Double>) entry.getValue(); //obtenemos por cada etiqueta su tfidf
 			HashMap<String, Double> hmAux=new HashMap<String, Double>();
-			if(!modeloPersona.containsKey(pUserId)) { //si el modeloPersona no contiene el userId se crea
-				hmAux=new HashMap<String, Double>();
-				hmAux=hMtfidf;	
-			}
-			else {
-				for (Map.Entry<?, ?> entry2 : hMtfidf.entrySet()) { //por cada etiqueta
-				tfidf=(Double) entry2.getValue(); //obtenemos su tfidf
-				//si lo tiene actualiza el valor
-					hmAux=modeloPersona.get(pUserId);
-					tfidfAux=(Double)hmAux.get(entry2.getKey());
+			for (Map.Entry<?, ?> entry2 : hMtfidf.entrySet()) { //por cada etiqueta
+				if(!modeloPersona.containsKey(pUserId)) { //si el modeloPersona no contiene el userId 
+					hmAux=new HashMap<String, Double>();
+					modeloPersona.put(pUserId, hmAux);	
+				}
+				else {
+					tfidf=(Double) entry2.getValue(); //obtenemos su tfidf 
+					tfidfAux=(Double)hmAux.get(entry2.getKey()); //obtenemos su tfidf antiguo
 					
-					if(tfidfAux==null) {
+					if(tfidfAux==null && tfidf!=null) {
+						tfidfAux=0.0;
+					}
+					else if(tfidfAux!=null && tfidf==null) {
+						tfidf=0.0;
+					}
+					else if(tfidfAux==null && tfidf==null) {
+						tfidf=0.0;
 						tfidfAux=0.0;
 					}
 					tfidf=(Double)tfidf+(Double)tfidfAux;
@@ -77,7 +82,6 @@ public class ModeloPersonas {
 			}
 			modeloPersona.put(pUserId, hmAux);
 		}
-		//modeloPersona.print();
 	}
 	
 	private Double cosV_W(HashMap<String, Double> pV, HashMap<String, Double> pW) {
@@ -103,16 +107,16 @@ public class ModeloPersonas {
 	public HMIntegerDouble crearSimilitud(HMStringDouble pHMModeloProducto,HMStringDouble pModeloPersona){
 		System.out.println("--> CREANDO MATRIZ DE SIMILITUD");
 		HMIntegerDouble matrizSimilitud=new HMIntegerDouble();
-		HashMap<Integer, Double> hm;
+		HashMap<Integer, Double> hm=new HashMap<Integer, Double>();
 		
-		HashMap<String, Double> vi=null;
-		HashMap<String, Double> wi=null;
+		HashMap<String, Double> vi=new HashMap<String, Double>();
+		HashMap<String, Double> wi=new HashMap<String, Double>();
 		Double rdo=0.0;
 		
-		for (Map.Entry<?, ?> entry : pHMModeloProducto.entrySet()) {
+		for (Map.Entry<?, ?> entry : pHMModeloProducto.entrySet()) { //por cada pelicula
 			vi=(HashMap<String, Double>) entry.getValue();
 			hm=new HashMap<Integer, Double>();
-			for (Map.Entry<?, ?> entry2 : pModeloPersona.entrySet()) {
+			for (Map.Entry<?, ?> entry2 : pModeloPersona.entrySet()) { //por cada usuario
 				wi=(HashMap<String, Double>) entry2.getValue();
 				rdo=cosV_W(vi, wi);
 				hm.put((Integer) entry2.getKey(), rdo);

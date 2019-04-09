@@ -1,5 +1,9 @@
 package euskoflix.modelo;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -39,5 +43,19 @@ public class HMIntegerDouble {
 
 	public Set<Entry<Integer, HashMap<Integer, Double>>> entrySet() {
 		return hashmap.entrySet();
+	}
+
+	public Integer size() {
+		return hashmap.size();
+	}
+	
+	public void hashmap2txt(String pDestino) throws IOException {
+		BufferedWriter bw=new BufferedWriter(new FileWriter(pDestino));
+		for (Map.Entry<?, ?> entry : hashmap.entrySet()) {
+			bw.write(entry.getKey() + " "+ (HashMap<Integer, Double>) entry.getValue());
+			bw.newLine();	
+	    }
+		bw.flush();
+		bw.close();
 	}
 }
