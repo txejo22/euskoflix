@@ -39,7 +39,6 @@ public class Euskoflix {
 		Euskoflix.getEuskoflix().cargarEstrucutras();	
 		//VentanaMostrarDatos v=new VentanaMostrarDatos();
 		HMIntegerDouble matrizValoraciones=MatrizValoraciones.getValoracionesUsuario().getMatriz();
-		System.out.println(matrizValoraciones.size());
 		HMStringDouble modeloProducto=ModeloProducto.getModeloProducto().crearModeloProducto();
 		HMStringDouble modeloPersona=ModeloPersonas.getModeloPersonas().crearModeloPersona(matrizValoraciones, modeloProducto, 3.5);
 		HMIntegerDouble matrizSimilitud=ModeloPersonas.getModeloPersonas().crearSimilitud(modeloProducto, modeloPersona);
