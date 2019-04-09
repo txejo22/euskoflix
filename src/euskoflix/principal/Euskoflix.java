@@ -30,7 +30,9 @@ public class Euskoflix {
 	private static Euskoflix miEuskoflix;
 	
 	//CONTRUCTORA
-	private Euskoflix() {}
+	private Euskoflix() {
+		
+	}
 	
 	//MAIN
 	public static void main(String[] args) throws IOException, URISyntaxException {	
@@ -40,7 +42,7 @@ public class Euskoflix {
 		HMStringDouble modeloProducto=ModeloProducto.getModeloProducto().crearModeloProducto();
 		HMStringDouble modeloPersona=ModeloPersonas.getModeloPersonas().crearModeloPersona(matrizValoraciones, modeloProducto, 3.5);
 		HMIntegerDouble matrizSimilitud=ModeloPersonas.getModeloPersonas().crearSimilitud(modeloProducto, modeloPersona);
-		//
+		
 		System.out.println(matrizSimilitud.get(2164).get(4045));
 		System.out.println(matrizSimilitud.get(63).get(4045));
 		System.out.println(matrizSimilitud.get(807).get(4045));
