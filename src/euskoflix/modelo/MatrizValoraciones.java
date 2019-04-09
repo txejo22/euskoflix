@@ -56,7 +56,7 @@ public class MatrizValoraciones {
 				else {
 					valoraciones=new HashMap<Integer, Double>();
 				}
-				MatrizValoraciones.getValoracionesUsuario().matrizValoraciones.getHashMap().put(userId,valoraciones);
+				MatrizValoraciones.getValoracionesUsuario().matrizValoraciones.put(userId,valoraciones);
 				linea=br.readLine();
 			}
 			br.close();

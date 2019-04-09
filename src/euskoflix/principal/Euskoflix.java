@@ -35,8 +35,8 @@ public class Euskoflix {
 	}
 	
 	//MAIN
-	public static void main(String[] args) throws IOException, URISyntaxException {	
-		Euskoflix.getEuskoflix().cargarEstrucutras();	
+	public static void main(String[] args) throws IOException {	
+		Euskoflix.getEuskoflix().cargarEstrucutras();
 		//VentanaMostrarDatos v=new VentanaMostrarDatos();
 		HMIntegerDouble matrizValoraciones=MatrizValoraciones.getValoracionesUsuario().getMatriz();
 		HMStringDouble modeloProducto=ModeloProducto.getModeloProducto().crearModeloProducto();
@@ -60,7 +60,7 @@ public class Euskoflix {
 		return miEuskoflix;
 	}
 	
-	private void cargarEstrucutras() throws IOException, URISyntaxException {
+	public void cargarEstrucutras() throws IOException {
 		MatrizValoraciones.getValoracionesUsuario().cargar(movie_ratings);
 		ModeloProducto.getModeloProducto().cargar(movie_tags);
 		MovieTitles.getMovieTitles().cargar(movie_titles);
