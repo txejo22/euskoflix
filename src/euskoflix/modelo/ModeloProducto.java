@@ -85,7 +85,7 @@ public class ModeloProducto {
 	}
 	
 	private HashMap<Integer, HashMap<String, Integer>> crearMatrizEtiqProd() {
-		System.out.println("\t--> CREANDO MATRIZ DE ETIQUETAS DE LOS PRODUCTOS");
+		System.out.println("\t--> CREANDO MATRIZ DE ETIQUETAS DE LOS PRODUCTOS...");
 		HashMap<Integer, HashMap<String, Integer>> matrizEtiqProd=new HashMap<Integer, HashMap<String, Integer>>();
 		HashMap<String, Integer> hm;
 		ArrayList<String> etiquetas=new ArrayList<String>();

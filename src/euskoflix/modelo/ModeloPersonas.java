@@ -26,7 +26,7 @@ public class ModeloPersonas {
 	}
 	
 	public HMStringDouble crearModeloPersona(HMIntegerDouble pHMMatrizVal, HMStringDouble pHMModeloProducto, Double pUmbral) {
-		System.out.println("--> CREANDO MODELO PERSONA");
+		System.out.println("--> CREANDO MODELO PERSONA...");
 		HashMap<Integer, Double> movieVal=new HashMap<Integer, Double>();
 		Double puntuacion;
 		
@@ -36,7 +36,7 @@ public class ModeloPersonas {
 			for (Map.Entry<?, ?> entry2 : movieVal.entrySet()) { //por cada pelicula
 				HashMap<String, Double> hmAux=new HashMap<String, Double>();
 				puntuacion=(Double) entry2.getValue(); //obtenemos su puntuacion
-				if(puntuacion>=pUmbral) { //si la putuación es superior al umbral
+				if(puntuacion>=pUmbral) { //si la putuaciï¿½n es superior al umbral
 					hmAux=pHMModeloProducto.get((Integer) entry2.getKey());
 					if(hmAux!=null) {
 						pHMModeloProductoReducido.put((Integer) entry2.getKey(), hmAux); //se anade al modelo reducido las peliculas con un umbral > 3.5
@@ -55,11 +55,11 @@ public class ModeloPersonas {
 		Double tfidfAux;
 		
 		for (Map.Entry<?, ?> entry : pHMModeloProductoReducido.entrySet()) { //por cada pelicula
-			hMtfidf=(HashMap<String, Double>) entry.getValue(); //obtenemos por cada etiqueta su tfidf
+			hMtfidf=(HashMap<String, Double>) entry.getValue(); //obtenemos por cada pelicula su tfidf(vector)
 			HashMap<String, Double> hmAux=new HashMap<String, Double>();
 			for (Map.Entry<?, ?> entry2 : hMtfidf.entrySet()) { //por cada etiqueta
 				if(!modeloPersona.containsKey(pUserId)) { //si el modeloPersona no contiene el userId 
-					hmAux=new HashMap<String, Double>();
+					hmAux.put((String)entry2.getKey(), (Double)entry2.getValue());
 					modeloPersona.put(pUserId, hmAux);	
 				}
 				else {
@@ -100,12 +100,16 @@ public class ModeloPersonas {
 			}
 		}
 		Double denominador=Math.sqrt(suma2)*Math.sqrt(suma3);
-		rdo=(Double)suma1/(Double)denominador;
+		if (denominador==0.0){
+			rdo=0.0;
+		}else{
+			rdo=(Double)suma1/(Double)denominador;
+		}
 		return rdo;
 	}
 	
 	public HMIntegerDouble crearSimilitud(HMStringDouble pHMModeloProducto,HMStringDouble pModeloPersona){
-		System.out.println("--> CREANDO MATRIZ DE SIMILITUD");
+		System.out.println("--> CREANDO MATRIZ DE SIMILITUD...");
 		HMIntegerDouble matrizSimilitud=new HMIntegerDouble();
 		HashMap<Integer, Double> hm=new HashMap<Integer, Double>();
 		
