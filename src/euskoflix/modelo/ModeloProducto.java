@@ -84,7 +84,7 @@ public class ModeloProducto {
 	    return model;   
 	}
 	
-	private HMStringDouble crearMatrizEtiqProd() {
+	private HMStringDouble crearMatrizEtiqProd() throws IOException {
 		System.out.println("\t--> CREANDO MATRIZ DE ETIQUETAS DE LOS PRODUCTOS...");
 		HMStringDouble matrizEtiqProd=new HMStringDouble();
 		HashMap<String, Double> hm;
@@ -100,7 +100,7 @@ public class ModeloProducto {
 				e=etiquetas.get(j);
 				if(hm.containsKey(e)) {
 					valor=new Double(hm.get(e));
-					hm.put(e, valor+1.0);
+					hm.put(e, (Double)valor+1.0);
 				}
 				else {
 					hm.put(e, (Double)1.0);
@@ -109,20 +109,22 @@ public class ModeloProducto {
 			matrizEtiqProd.put((Integer) entry.getKey(), hm);
 		}
 		 System.out.println("\t<-- FINALIZADA MATRIZ DE ETIQUETAS DE LOS PRODUCTOS");
+		 matrizEtiqProd.hashmap2txt("./src/euskoflix/archivos/matrizEtiqProd.txt");
 		 return matrizEtiqProd;
 	}
 	
-	private HMStringDouble crearMatrizEtiqProdAux(HMStringDouble pMatrizEtiqProd) {
+	private HMStringDouble crearMatrizEtiqProdAux(HMStringDouble pMatrizEtiqProd) throws IOException {
 		System.out.println("\t--> CREANDO MATRIZ DE ETIQUETAS DE LOS PRODUCTOS AUXILIAR...");
 		HMStringDouble matrizEtiqProdAux=new HMStringDouble();
-		HashMap<String, Integer> hm;
-		HashMap<String, Double> hmAux=new HashMap<String, Double>();
+		HashMap<String, Double> hm;
+		 HashMap<String, Double> hmAux;
 		Double mod;
 		Double val;
 		Double valAux;
 		 for (Map.Entry<?, ?> entry : pMatrizEtiqProd.entrySet()) {
 			 mod=calcularModulo((HashMap<String, Double>) entry.getValue());
-			 hm=(HashMap<String, Integer>) entry.getValue();
+			 hm=(HashMap<String, Double>) entry.getValue();
+			 hmAux=new HashMap<String, Double>();
 			 for (Map.Entry<?, ?> entry2 : hm.entrySet()) {
 				 val=new Double((Double) entry2.getValue())/(Double)mod;
 				 hmAux.put((String)entry2.getKey(), val);
@@ -130,10 +132,11 @@ public class ModeloProducto {
 			 matrizEtiqProdAux.put((Integer) entry.getKey(), hmAux);
 		 }
 		System.out.println("\t<-- FINALIZADA MATRIZ DE ETIQUETAS DE LOS PRODUCTOS AUXILIAR");
+		matrizEtiqProdAux.hashmap2txt("./src/euskoflix/archivos/matrizEtiqProdAux.txt");
 		return matrizEtiqProdAux;
 	}
 	
-	public HMStringDouble crearModeloProducto() {
+	public HMStringDouble crearModeloProducto() throws IOException {
 		System.out.println("--> CREANDO MODELO DE PRODUCTO");
 		HMStringDouble matrizEtiqProd=crearMatrizEtiqProd();
 		HMStringDouble matrizEtiqProdAux=crearMatrizEtiqProdAux(matrizEtiqProd);
@@ -149,21 +152,22 @@ public class ModeloProducto {
 			 hm2=new HashMap<String, Double>();
 			 for (Map.Entry<?, ?> entry2 : hm.entrySet()) {
 				 tag=(String) entry2.getKey();
-				 valor=tfidf(tag, movieId, matrizEtiqProdAux, matrizEtiqProd);
+				 valor=tfidf(tag, movieId, matrizEtiqProdAux);
 				 hm2.put(tag, valor);
 			 }
 			 modeloProducto.put(movieId, hm2);
 			}
 		 System.out.println("<-- FINALIZADO MODELO DE PRODUCTO\n");
+		 modeloProducto.hashmap2txt("./src/euskoflix/archivos/modeloProducto.txt");
 		 return modeloProducto;
 	}
 	
-	private Double tfidf(String pTag, Integer pMovieId, HMStringDouble pMatrizEtiqProdAux, HMStringDouble pMatrizEtiqProd) {
+	private Double tfidf(String pTag, Integer pMovieId, HMStringDouble pMatrizEtiqProdAux) {
 		Double tfidf=0.0;
 		//formula tfidf(t)=tf x log(N/Nt)
 		Double tf=new Double(pMatrizEtiqProdAux.get(pMovieId).get(pTag)); //el numero de veces que aparece la etiqueta t en una pelicula
-		Double N=new Double(pMatrizEtiqProd.size()); //el numero total de productos
-		Double Nt=new Double(numAparicionesTag(pTag,pMatrizEtiqProd)); //el numero de productos a los que se aplica la etiqueta t
+		Double N=new Double(pMatrizEtiqProdAux.size()); //el numero total de productos
+		Double Nt=new Double(numAparicionesTag(pTag,pMatrizEtiqProdAux)); //el numero de productos a los que se aplica la etiqueta t
 		tfidf=tf*Math.log10((Double) N/(Double) Nt);
 		return tfidf;
 	}

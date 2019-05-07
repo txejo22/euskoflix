@@ -25,16 +25,17 @@ public class ModeloPersonas {
 		return miModeloPersonas;
 	}
 	
-	public HMStringDouble crearModeloPersona(HMIntegerDouble pHMMatrizVal, HMStringDouble pHMModeloProducto, Double pUmbral) {
+	public HMStringDouble crearModeloPersona(HMIntegerDouble pHMMatrizVal, HMStringDouble pHMModeloProducto, Double pUmbral) throws IOException {
 		System.out.println("--> CREANDO MODELO PERSONA...");
 		HashMap<Integer, Double> movieVal=new HashMap<Integer, Double>();
 		Double puntuacion;
-		
+		HMStringDouble pHMModeloProductoReducido;
+		HashMap<String, Double> hmAux;
 		for (Map.Entry<?, ?> entry : pHMMatrizVal.entrySet()) { //por cada usuario
 			movieVal=(HashMap<Integer, Double>) entry.getValue(); //Obtenemos por cada usuario las peliculas y sus puntuaciones
-			HMStringDouble pHMModeloProductoReducido=new HMStringDouble();
+			pHMModeloProductoReducido=new HMStringDouble();
+			hmAux=new HashMap<String, Double>();
 			for (Map.Entry<?, ?> entry2 : movieVal.entrySet()) { //por cada pelicula
-				HashMap<String, Double> hmAux=new HashMap<String, Double>();
 				puntuacion=(Double) entry2.getValue(); //obtenemos su puntuacion
 				if(puntuacion>=pUmbral) { //si la putuaci�n es superior al umbral
 					hmAux=pHMModeloProducto.get((Integer) entry2.getKey());
@@ -46,6 +47,7 @@ public class ModeloPersonas {
 			sumar(pHMModeloProductoReducido, (Integer) entry.getKey());
 		}	
 		System.out.println("<-- FINALIZADO MODELO PERSONA\n");
+		modeloPersona.hashmap2txt("./src/euskoflix/archivos/modeloPersonas.txt");
 		return modeloPersona;
 	}
 	
@@ -108,7 +110,7 @@ public class ModeloPersonas {
 		return rdo;
 	}
 	
-	public HMIntegerDouble crearSimilitud(HMStringDouble pHMModeloProducto,HMStringDouble pModeloPersona){
+	public HMIntegerDouble crearSimilitud(HMStringDouble pHMModeloProducto, HMStringDouble pModeloPersona){
 		System.out.println("--> CREANDO MATRIZ DE SIMILITUD...");
 		HMIntegerDouble matrizSimilitud=new HMIntegerDouble();
 		HashMap<Integer, Double> hm=new HashMap<Integer, Double>();
