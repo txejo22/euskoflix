@@ -29,6 +29,10 @@ public class MovieTitles {
 			return miHashMap;
 		}
 		
+		public HashMap<Integer, String> getHashMap() {
+			return hashmap;
+		}
+		
 		public void cargar(String pPath) throws IOException {
 			BufferedReader br=null;
 			try {
@@ -48,6 +52,7 @@ public class MovieTitles {
 				e.printStackTrace();
 			}
 		}
+		
 		public TableModel toTableModelTitle() {
 			System.out.println("--> HASHMAP TO JTABLE MODEL TITLES");
 		    DefaultTableModel model = new DefaultTableModel(
@@ -64,4 +69,9 @@ public class MovieTitles {
 		    
 		    return model;   
 		}
+		
+		public String buscarPorId(Integer pId) {
+			return MovieTitles.getMovieTitles().getHashMap().get(pId);
+		}
+		
 	}

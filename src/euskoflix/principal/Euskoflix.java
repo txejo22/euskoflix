@@ -15,6 +15,7 @@ import euskoflix.modelo.MatrizValoraciones;
 import euskoflix.modelo.ModeloPersonas;
 import euskoflix.modelo.ModeloProducto;
 import euskoflix.modelo.MovieTitles;
+import euskoflix.vista.VentanaBusqueda;
 import euskoflix.vista.VentanaMostrarDatos;
 
 public class Euskoflix {
@@ -43,11 +44,14 @@ public class Euskoflix {
 		HMStringDouble modeloPersona=ModeloPersonas.getModeloPersonas().crearModeloPersona(matrizValoraciones, modeloProducto, 3.5);
 		HMIntegerDouble matrizSimilitud=ModeloPersonas.getModeloPersonas().crearSimilitud(modeloProducto, modeloPersona);
 		
-		System.out.println("Es "+matrizSimilitud.get(2164).get(4045)+" y debería ser 0.1899");
+		VentanaBusqueda v=new VentanaBusqueda();
+		
+		//peli, usuario
+		/*System.out.println("Es "+matrizSimilitud.get(2164).get(4045)+" y debería ser 0.1899");
 		System.out.println("Es "+matrizSimilitud.get(63).get(4045)+" y debería ser 0.2612");
 		System.out.println("Es "+matrizSimilitud.get(807).get(4045)+" y debería ser 0.2363");
 		System.out.println("Es "+matrizSimilitud.get(187).get(4045)+" y debería ser 0.2059");
-		System.out.println("Es "+matrizSimilitud.get(11).get(4045)+" y debería ser 0.3596");
+		System.out.println("Es "+matrizSimilitud.get(11).get(4045)+" y debería ser 0.3596");*/
 		
 		matrizSimilitud.hashmap2txt(mSim);
 	}

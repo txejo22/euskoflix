@@ -1,15 +1,25 @@
 package euskoflix.modelo;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public class ModeloPersonas {
 
 	//ATRIBUTOS
 	private HMStringDouble modeloPersona;
+	private HMIntegerDouble matrizSimilitud;
 	private static ModeloPersonas miModeloPersonas;
 	
 	//CONSTRUCTORA
@@ -23,6 +33,10 @@ public class ModeloPersonas {
 			miModeloPersonas=new ModeloPersonas();
 		}
 		return miModeloPersonas;
+	}
+	
+	public HMIntegerDouble getMatrizSimilitud() {
+		return matrizSimilitud;
 	}
 	
 	public HMStringDouble crearModeloPersona(HMIntegerDouble pHMMatrizVal, HMStringDouble pHMModeloProducto, Double pUmbral) throws IOException {
@@ -112,24 +126,90 @@ public class ModeloPersonas {
 	
 	public HMIntegerDouble crearSimilitud(HMStringDouble pHMModeloProducto, HMStringDouble pModeloPersona){
 		System.out.println("--> CREANDO MATRIZ DE SIMILITUD...");
-		HMIntegerDouble matrizSimilitud=new HMIntegerDouble();
+		matrizSimilitud=new HMIntegerDouble();
 		HashMap<Integer, Double> hm=new HashMap<Integer, Double>();
 		
 		HashMap<String, Double> vi=new HashMap<String, Double>();
 		HashMap<String, Double> wi=new HashMap<String, Double>();
 		Double rdo=0.0;
-		
+		DecimalFormat format=new DecimalFormat("#.####");
 		for (Map.Entry<?, ?> entry : pHMModeloProducto.entrySet()) { //por cada pelicula
 			vi=(HashMap<String, Double>) entry.getValue();
 			hm=new HashMap<Integer, Double>();
 			for (Map.Entry<?, ?> entry2 : pModeloPersona.entrySet()) { //por cada usuario
 				wi=(HashMap<String, Double>) entry2.getValue();
 				rdo=cosV_W(vi, wi);
-				hm.put((Integer) entry2.getKey(), rdo);
+				hm.put((Integer) entry2.getKey(), Double.parseDouble(format.format(rdo).replace(",",".")));
 			}
 			matrizSimilitud.put((Integer) entry.getKey(), hm);
 		}
 		System.out.println("<-- FINALIZADA MATRIZ DE SIMILITUD\n");
 		return matrizSimilitud;
+	}
+	
+	public Map ordenar(Integer pId,HashMap<Integer, Double> pVector) {
+		System.out.println("\t --> INICIANDO ORDENACION...");
+		HashMap<Integer, Double> pVectorF=ModeloPersonas.getModeloPersonas().filtrar(pId, pVector);
+		List list = new LinkedList(pVectorF.entrySet());
+		//Para ordenar descendentemente
+		 Collections.sort(list, new Comparator() {
+			 public int compare(Object o1, Object o2) {
+				 return ((Comparable) ((Map.Entry) (o2)).getValue()).compareTo(((Map.Entry) (o1)).getValue());
+			 }
+		 });
+		 
+		 //Poner la lista ordenada otra vez en el hashmap
+		 Map<Integer, Double> sortedMap = new LinkedHashMap<Integer, Double>();
+		 Integer x=0;
+		 	for (Iterator it = list.iterator(); it.hasNext();) {
+		 		Map.Entry<Integer, Double> entry = (Map.Entry<Integer, Double>)it.next();
+		 		sortedMap.put(entry.getKey(), entry.getValue());
+		 		if(x==9) {
+		 			break;
+		 		}
+		 		x++;
+		 	}
+		 	System.out.println("\t <-- ORDENACION FINALIZADA");
+		 return sortedMap;
+	 }
+	
+	public HashMap<Integer, Double> filtrar(Integer pId, HashMap<Integer, Double> pVector) {
+		System.out.println("\t\t --> INICIANDO FILTRADO...");
+		//Se comprueba que no haya visto la película
+		HashMap<Integer, Double> aux=new HashMap<Integer, Double>();
+		for (Map.Entry<?, ?> entry : pVector.entrySet()) { 
+			if(!MatrizValoraciones.getValoracionesUsuario().getMatriz().get(pId).containsKey((Integer)entry.getKey())) {
+				aux.put((Integer)entry.getKey(), (Double)entry.getValue());
+			}
+		}
+		System.out.println("\t\t <-- FINALIZADO EL FILTRADO");
+		return aux;
+	}
+	
+	public TableModel toTableRdo(Map<?,?> pVector) {
+		System.out.println("\t --> HASHMAP TO JTABLE TABLA RESULTADO");
+	    DefaultTableModel model = new DefaultTableModel(
+	        new Object[] { "MovieId", "Title", "Rating" },0);
+	    DecimalFormat f= new DecimalFormat("#.####");
+	    for (Map.Entry<?, ?> entry : pVector.entrySet()) {
+	    		model.addRow(new Object[] { entry.getKey(), MovieTitles.getMovieTitles().buscarPorId((Integer)entry.getKey()) , f.format((Double)entry.getValue()*10.0)});
+	    }   
+	    
+	    System.out.println("\t <-- HASHMAP TO JTABLE MODEL TABLA RESULTADO COMPLETADO");
+	    
+	    return model;   
+	}
+	
+	public HashMap<Integer, Double> obtenerVect(Integer pId) {
+		System.out.println("\t --> OBTENIENDO VECTOR...");
+		HashMap<Integer, Double> rdo=new HashMap<Integer, Double>();
+		HashMap<Integer, Double> hm=new HashMap<Integer, Double>();
+		for (Map.Entry<?, ?> entry : matrizSimilitud.entrySet()) {
+			hm=(HashMap<Integer, Double>) entry.getValue();
+	    	rdo.put((Integer)entry.getKey(), hm.get(pId));
+	    }  
+		System.out.println("\t <-- VECTOR OBTENIDO");
+		return rdo;
+		
 	}
 }
