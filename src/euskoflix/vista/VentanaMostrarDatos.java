@@ -8,7 +8,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import euskoflix.modelo.MatrizValoraciones;
-import euskoflix.modelo.ModeloPersonas;
 import euskoflix.modelo.ModeloProducto;
 import euskoflix.modelo.MovieTitles;
 

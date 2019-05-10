@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,10 +37,11 @@ public class MatrizValoraciones {
 		BufferedReader br=null;
 		try {
 			System.out.println("--> CARGANDO MATRIZ VALORACIONES...");
+			
 			br=new BufferedReader(new FileReader(pPath));
 			String linea=br.readLine();
-			HashMap<Integer, Double> valoraciones=null;
-			int x=0;
+			HashMap<Integer, Double> valoraciones;
+			
 			while(linea!=null) {
 				String[] datos=linea.split(",");
 				
@@ -68,15 +68,14 @@ public class MatrizValoraciones {
 	
 	public TableModel toTableMatrizValoraciones() {
 		System.out.println("--> HASHMAP TO JTABLE MATRIZ VALORACIONES");
-	    DefaultTableModel model = new DefaultTableModel(
+	    
+		DefaultTableModel model = new DefaultTableModel(
 	        new Object[] { "UserId", "MovieId", "Rating" },0);
 	   
-	    HashMap<Integer, Double> valoraciones;
 	    int x=0;
 	  
 	    for (Map.Entry<?, ?> entry : matrizValoraciones.entrySet()) {
-	    	valoraciones=(HashMap<Integer, Double>) entry.getValue();
-	    	for (Map.Entry<?, ?> entryAux : valoraciones.entrySet()) {
+	    	for (Map.Entry<?, ?> entryAux : ((HashMap<Integer, Double>) entry.getValue()).entrySet()) {
 	    		model.addRow(new Object[] { entryAux.getKey(), entry.getKey() , entryAux.getValue()});
 	    		x++;
 	    	}
@@ -84,7 +83,7 @@ public class MatrizValoraciones {
 	    }    
 	    
 	    System.out.println("<-- HASHMAP TO JTABLE MODEL MATRIZ VALORACIONES COMPLETADO");
-	    System.out.println("El nï¿½mero total de valoraciones es " + x +" y deberï¿½an ser 338355\n");
+	    System.out.println("El núero total de valoraciones es " + x +" y deberían ser 338355\n");
 	    
 	    return model;   
 	}

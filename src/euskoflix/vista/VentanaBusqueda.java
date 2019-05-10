@@ -1,21 +1,20 @@
 package euskoflix.vista;
 
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JTextField;
-import java.awt.BorderLayout;
 import javax.swing.JButton;
-import java.awt.GridLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 
+import euskoflix.modelo.MatrizValoraciones;
 import euskoflix.modelo.ModeloPersonas;
 
 public class VentanaBusqueda extends JFrame{
@@ -23,9 +22,6 @@ public class VentanaBusqueda extends JFrame{
 	private JFrame frmBsqueda;
 	private JTextField textField_1;
 
-	/**
-	 * Create the application.
-	 */
 	public VentanaBusqueda() {
 		initialize();
 	}
@@ -56,16 +52,22 @@ public class VentanaBusqueda extends JFrame{
 		
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("--> INICIANDO BUSQUEDA DEL PARA EL USUARIO "+textField_1.getText());
-				HashMap<Integer, Double> vector=ModeloPersonas.getModeloPersonas().obtenerVect(Integer.parseInt(textField_1.getText()));
-				Map v=ModeloPersonas.getModeloPersonas().ordenar(Integer.parseInt(textField_1.getText()),vector);
-				System.out.println("<-- FINALIZADA LA BUSQUEDA\n");
-				VentanaRdo vR=new VentanaRdo(v);
-				frmBsqueda.dispose();
-				
+				//comprobar id
+				if(!MatrizValoraciones.getValoracionesUsuario().getMatriz().containsKey(Integer.parseInt(textField_1.getText()))) {
+					JOptionPane.showMessageDialog(null, "El id introducido es incorrecto", "MENSAJE DE ERROR", JOptionPane.WARNING_MESSAGE);
+				}
+				else {
+					System.out.println("--> INICIANDO BUSQUEDA DEL PARA EL USUARIO "+textField_1.getText());
+					
+					HashMap<Integer, Double> vector=ModeloPersonas.getModeloPersonas().obtenerVect(Integer.parseInt(textField_1.getText()));
+					Map v=ModeloPersonas.getModeloPersonas().ordenar(Integer.parseInt(textField_1.getText()),vector);
+					
+					System.out.println("<-- FINALIZADA LA BUSQUEDA\n");
+					
+					VentanaRdo vR=new VentanaRdo(v);
+					frmBsqueda.dispose();
+				}	
 			}
 		});
-		
-		
 	}
 }

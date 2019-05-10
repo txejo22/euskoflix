@@ -13,7 +13,6 @@ import javax.swing.JTable;
 import euskoflix.modelo.ModeloPersonas;
 import javax.swing.SwingConstants;
 import javax.swing.JPanel;
-import javax.swing.table.DefaultTableModel;
 
 public class VentanaRdo extends JFrame{
 
@@ -32,9 +31,6 @@ public class VentanaRdo extends JFrame{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
-		table = new JTable(ModeloPersonas.getModeloPersonas().toTableRdo(pV));
-		frame.getContentPane().add(table, BorderLayout.NORTH);
-		
 		JPanel panel = new JPanel();
 		frame.getContentPane().add(panel, BorderLayout.SOUTH);
 		
@@ -45,6 +41,10 @@ public class VentanaRdo extends JFrame{
 		JButton btnAtras = new JButton("ATRAS");
 		panel_1.add(btnAtras);
 		btnAtras.setVerticalAlignment(SwingConstants.BOTTOM);
+		
+		table = new JTable(ModeloPersonas.getModeloPersonas().toTableRdo(pV));
+		JScrollPane scrollPane_1 = new JScrollPane(table);
+		frame.getContentPane().add(scrollPane_1, BorderLayout.NORTH);
 		btnAtras.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				VentanaBusqueda vB=new VentanaBusqueda();
@@ -53,10 +53,6 @@ public class VentanaRdo extends JFrame{
 		});
 		frame.setVisible(true);
 		
-		
 		System.out.println("<-- RESULTADOS DE BUSQUEDA CARGADOS");
-		
-		
-	
 	}
 }

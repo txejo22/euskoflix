@@ -37,8 +37,10 @@ public class MovieTitles {
 			BufferedReader br=null;
 			try {
 				System.out.println("--> CARGANDO MOVIE TITLES...");
+				
 				br=new BufferedReader(new FileReader(pPath));
 				String linea=br.readLine();
+				
 				while(linea!=null) {
 					String[] datos=linea.split(";");
 					int movieId=Integer.parseInt(datos[0]);
@@ -55,11 +57,14 @@ public class MovieTitles {
 		
 		public TableModel toTableModelTitle() {
 			System.out.println("--> HASHMAP TO JTABLE MODEL TITLES");
-		    DefaultTableModel model = new DefaultTableModel(
+		   
+			DefaultTableModel model = new DefaultTableModel(
 		        new Object[] { "MovieId", "Title" }, 0
 		    );
-		    int x=0;
-		    for (Map.Entry<?, ?> entry : hashmap.entrySet()) {
+		    
+			int x=0;
+		    
+			for (Map.Entry<?, ?> entry : hashmap.entrySet()) {
 		        model.addRow(new Object[] { entry.getKey(), entry.getValue() });
 		        x++;
 		    }
