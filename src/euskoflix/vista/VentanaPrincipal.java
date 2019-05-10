@@ -41,7 +41,7 @@ public class VentanaPrincipal {
 		txtpnEuskoflix.setBackground(SystemColor.inactiveCaption);
 		txtpnEuskoflix.setToolTipText("");
 		txtpnEuskoflix.setEditable(false);
-		txtpnEuskoflix.setText("               EUSKOFLIX\r\n\r\n\r\nBienvenido a nuestro sistema de recomendaci\u00F3n. A continuaci\u00F3n, se pueden realizar las opciones que se muestran a la derecha. Disfrute de la experiencia.");
+		txtpnEuskoflix.setText("               EUSKOFLIX\r\n\r\n\r\nBienvenido a nuestro sistema de recomendaci\u00F3n de pel\u00EDculas. A continuaci\u00F3n, se pueden realizar las opciones que se muestran a la derecha. Disfrute de la experiencia.");
 		txtpnEuskoflix.setBounds(30, 33, 184, 196);
 		frmEuskoflix.getContentPane().add(txtpnEuskoflix);
 		frmEuskoflix.setVisible(true);
